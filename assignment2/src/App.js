@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import ValidationComponent from "./ValidationComponent/ValidationComponent";
+import CharComponent from "./CharComponent/CharComponent";
 
 class App extends Component {
     state = {
@@ -10,6 +11,19 @@ class App extends Component {
     stringValidator = event => {
         this.setState({
             string: event.target.value,
+        });
+    };
+
+    charRemover = charIndex => {
+        console.log(charIndex);
+        const stringArray = [...this.state.string];
+        console.log(stringArray);
+        stringArray.splice(charIndex, 1);
+        console.log(stringArray);
+        const string = stringArray.join("");
+        console.log(string);
+        this.setState({
+            string: string,
         });
     };
 
@@ -27,8 +41,20 @@ class App extends Component {
         }
         return (
             <div className="App">
-                <input onChange={this.stringValidator} />
+                <input
+                    onChange={this.stringValidator}
+                    value={this.state.string}
+                />
                 {validationComponent}
+                {[...this.state.string].map((ch, index) => {
+                    return (
+                        <CharComponent
+                            click={() => this.charRemover(index)}
+                            char={ch}
+                            key={index}
+                        />
+                    );
+                })}
             </div>
         );
     }
